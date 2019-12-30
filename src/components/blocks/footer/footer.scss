@@ -1,0 +1,10 @@
+.footer-block {
+    width: 100%;
+    margin: 15px 0 0;
+    &__copyright {
+        padding: 15px 0 0;
+        border-top: 1px solid #6c757d;
+        text-align: center;
+        color: #6c757d;
+    }
+}

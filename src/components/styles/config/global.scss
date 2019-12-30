@@ -1,0 +1,24 @@
+
+body{
+    margin: 0;
+}
+.container {
+    margin: 0 auto;
+    padding: 15px 15px 0;
+    @media($screen-md-min) {
+        max-width: 1140px;
+    }
+    @media($screen-tablet-break) {
+        max-width: 991px;
+    }
+    @media($screen-mobile-break) {
+        max-width: 767px;
+    }
+    @media($screen-xs-max) {
+        max-width: 479px;
+    }
+}
+
+.content {
+    min-height: calc(100vh - 140px);
+}

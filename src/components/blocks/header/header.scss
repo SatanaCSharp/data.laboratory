@@ -1,0 +1,30 @@
+.header-block {
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__logo {
+        width: 20%;
+        display: inline-flex;
+        align-items: center;
+        img {
+            width: 20px;
+            align-self: center;
+        }
+    }
+    &__logo-title {
+        font-size: 30px;
+        font-family: $fontPoppins;
+        color: #31af91;
+    }
+    .nav-bar {
+        &__link {
+            text-decoration: none;
+            text-transform: capitalize;
+            font-size: 20px;
+            color: #20766e;
+            font-family: $fontPoppins;
+        }
+    }
+}
