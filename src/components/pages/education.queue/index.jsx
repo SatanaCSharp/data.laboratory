@@ -1,173 +1,90 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { useToolbarStyles } from '../../config/table.styles.config';
-import TableToolbar from '../../blocks/table.toolbar';
-import { stableSort, getSorting } from '../../../services/table.service';
+import Loader from '../../blocks/loader';
 import { educationQueuePending } from '../../../actions/education.queue.action.creator';
 import {
-    Paper,
-    Table,
-    TableCell,
-    TableRow,
-    TableBody,
-    TableContainer,
-    Checkbox,
-    TablePagination,
+  Paper,
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableCell,
+  TableRow,
 } from '@material-ui/core';
-import Loader from '../../blocks/loader';
-import TableHeader from '../../blocks/table.header';
 
 
 class EducationQueue extends Component {
   state = {
-    order: 'asc',
-    orderBy: '',
-    selected: [],
+    rowsPerPage: 5,
     page: 0,
-    dense: false,
-    rowPerPage: 5,
-    classes: []
+
   }
-  setTargetState = (propName, value) => {
-      this.setState({
-        [propName] : value
-      });
-  }
-  handleSelectAllClick = event => {
-      if (event.target.checked) {
-        const selectedRows = this.props.educationQueue.map(row => row.name);
-        this.setTargetState("selected", selectedRows);
-        return;
-      }
-      this.setTargetState("selected", []);
-  };
-
-  handleRequestSort = (event, property) => {
-      const isAsc = this.state.orderBy === property && this.state.order === 'asc';
-      this.setTargetState("order", isAsc ? 'desc' : 'asc');
-      this.setTargetState("orderBy", property);
-  };
-  handleClick = (event, name) => {
-    const {selected} = this.state;
-    const selectedIndex = this.state.selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(
-           this.state.selected.slice(0, selectedIndex),
-           this.state.selected.slice(selectedIndex + 1),
-        );
-    }
-
-    this.setTargetState(newSelected);
-  };
-  handleChangePage = (event, newPage) => {
-    this.setTargetState("page", newPage);
-  };
-
-  handleChangeRowsPerPage = event => {
-    this.setTargetState("rowPerPage", parseInt(event.target.value, 10));
-    this.setTargetState("rowPerPage", 0);
-  };
-
-  handleChangeDense = event => {
-    this.setTargetState("dense", event.target.checked);
-  };
-
-  isSelected = name => this.state.selected.indexOf(name) !== -1;
-
-  emptyRows = () => {
-    const { rowsPerPage, page } = this.state;
-    this.setTargetState("rowPerPage", rowsPerPage - Math.min(rowsPerPage, this.props.educationQueue.length - page * rowsPerPage))
-    return this.state.rowPerPage;
-  };
-  componentDidMount () {
-    this.setTargetState("classes", useToolbarStyles());
-    this.props.dispatch(educationQueuePending());
+  setTargetState = (stateName, stateValue) => {
+    this.setState({
+      [stateName]: stateValue
+    });
   }
 
+  handleChangePage = (event, page) => {
+    this.setTargetState("page", page);
+  }
+  handleChangeRowsPerPage = (event) => {
+      this.setTargetState("rowsPerPage", parseInt(event.target.value, 10));
+  }
+
+  componentDidMount() {
+      this.props.dispatch(educationQueuePending());
+  }
   render() {
-    const { classes, rowsPerPage, order, orderBy, selected, dense, page} = this.state;
-    const { educationQueue: {isLoading},  educationQueue} = this.props;
+    const { educationQueue: {isLoading}, educationQueue} = this.props;
+    const {rowsPerPage, page } = this.state;
     if(isLoading) return <Loader/>;
     return (
       <section className="container">
           <section className="education-queue">
-          <Paper className={classes.paper}>
-          <TableToolbar numSelected={selected.length} />
-          <TableContainer>
-            <Table
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              size={dense ? 'small' : 'medium'}
-              aria-label="enhanced table"
-            >
-              <TableHeader
-                classes={classes}
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={this.handleSelectAllClick}
-                onRequestSort={this.handleRequestSort}
-                rowCount={educationQueue.length}
-              />
-              <TableBody>
-                {stableSort(educationQueue, getSorting(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const isItemSelected = this.isSelected(row.name);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+            <span className="education-queue__title">54 Education Queues Data </span>
+            <Paper>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                      <TableRow>
 
-                    return (
-                      <TableRow
-                        hover
-                        onClick={event => this.handleClick(event, row.name)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.name}
-                        selected={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={isItemSelected}
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        </TableCell>
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {row.name}
-                        </TableCell>
-                        <TableCell align="right">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
-                        <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell>
+                          <TableCell>Row Number</TableCell>
+                          <TableCell>Ua Edr</TableCell>
+                          <TableCell>Short Name</TableCell>
+                          <TableCell>Date</TableCell>
+                          <TableCell>Number seats</TableCell>
+                          <TableCell>Number children</TableCell>
+                          <TableCell>Excess Younger</TableCell>
+                          <TableCell>Excess Elder</TableCell>
                       </TableRow>
-                    );
-                  })}
-                {this.emptyRows() > 0 && (
-                  <TableRow style={{ height: (dense ? 33 : 53) * this.emptyRows() }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={educationQueue.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
-          />
-      </Paper>
+                  </TableHead>
+                  <TableBody>{Object.values(educationQueue).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((educationQueueRow, index)=>{
+                      return !educationQueueRow ? null : <TableRow key={educationQueueRow.Ua_edr}>
+                          <TableCell>{index+1}</TableCell>
+                          <TableCell>{educationQueueRow.Ua_edr}</TableCell>
+                          <TableCell>{educationQueueRow.Short_name}</TableCell>
+                          <TableCell>{educationQueueRow.Date}</TableCell>
+                          <TableCell>{educationQueueRow.Number_seats || 'Is not specified'}</TableCell>
+                          <TableCell>{educationQueueRow.Number_children || 'Is not specified'}</TableCell>
+                          <TableCell>{educationQueueRow.ExcessYounger || 'Is not specified'}</TableCell>
+                          <TableCell>{educationQueueRow.ExcessElder || 'Is not specified'}</TableCell>
+                      </TableRow>
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25]}
+                  component="div"
+                  count={Object.values(educationQueue).length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={this.handleChangePage}
+                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                />
+            </Paper>
           </section>
       </section>
     );
