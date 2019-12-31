@@ -1,0 +1,34 @@
+//BreakPoints
+$screen-md-min: "min-width:992px";
+$screen-md-max: "max-width:991px";
+
+$screen-sm-min: "min-width:768px";
+$screen-sm-max: "max-width:767px";
+
+$screen-xs-min: "min-width:480px";
+$screen-xs-max: "max-width:479px";
+
+$screen-tablet-break: "max-width:991px) and (min-width: 768px";
+$screen-mobile-break: "max-width:767px) and (min-width: 480px";
+
+//FontFamilies
+
+$fontPoppins: 'Poppins', sans-serif;
+$fontRoboto: 'Roboto', sans-serif;
+
+//Colors
+$baseBg: #31af91;
+$baseColor: #999;
+$baseLightColor: #fff;
+$baseHoverColor: #31af91;
+$baseBorderColor: #999;
+$checkboxBackground: #fff;
+$checkboxBorder: #31af91;
+$userInfoColor: #08316e;
+
+//Font-sizes
+$baseNavFontSize: 16px;
+$baseNavFontSize-xs: 14px;
+
+//Border
+$baseBorderRadius: 5px;
